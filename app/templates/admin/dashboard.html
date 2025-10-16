@@ -1,5 +1,416 @@
 {% extends "admin/layouts/main.html" %}
-{% block title %} Dashboard {% endblock %}
+
+{% block title %}Data Artikel{% endblock %}
+
+{% block style %}
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+<style>
+    .multiline p {
+        width: 15rem;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        display: block;
+        line-height: 1.5em;
+        max-height: 4.5em;
+    }
+    
+    .multiline {
+        width: 10rem;
+        height: 2rem;
+        overflow: hidden;
+    }
+
+    .multiline p {
+        text-overflow: ellipsis;
+    }
+
+    .image-wrapper {
+        width: 100%;
+    }
+
+    .image-wrapper img {
+        width: 100%;
+        object-fit: cover;
+    }
+
+    body {
+        background: #f8f9fa;
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+
+    /* Dashboard Stats Cards */
+    .stats-container {
+        margin-bottom: 2rem;
+    }
+
+    .stat-card {
+        background: white;
+        border-radius: 15px;
+        padding: 1.5rem;
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+        text-align: center;
+        height: 100%;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        transition: transform 0.3s ease;
+        min-height: 350px;
+    }
+
+    .stat-card:hover {
+        transform: translateY(-5px);
+    }
+
+.stat-icon {
+    width: 80px;
+    height: 80px;
+    border-radius: 15px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 15px;
+    font-size: 2.5rem;
+    color: white;
+    background: linear-gradient(135deg, #4CAF50, #45a049);
+    position: relative; /* Tambahkan ini */
+}
+
+.stat-icon i {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    height: 100%;
+}
+    .stat-title {
+        font-size: 0.9rem;
+        color: #666;
+        margin-bottom: 5px;
+        font-weight: 500;
+    }
+
+    .stat-number {
+        font-size: 2.5rem;
+        font-weight: 700;
+        color: #333;
+        margin-bottom: 10px;
+    }
+
+    .stat-badge {
+        background: #E8F5E8;
+        color: #4CAF50;
+        padding: 4px 12px;
+        border-radius: 20px;
+        font-size: 0.8rem;
+        font-weight: 500;
+    }
+
+    /* Chart Container */
+    .chart-container {
+        background: white;
+        border-radius: 15px;
+        padding: 1.5rem;
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+        margin-bottom: 2rem;
+        height: 100%;
+        min-height: 350px;
+    }
+
+    .chart-title {
+        font-size: 1.1rem;
+        font-weight: 600;
+        color: #333;
+        margin-bottom: 1rem;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+    }
+
+    .chart-badge {
+        background: #E8F5E8;
+        color: #4CAF50;
+        padding: 4px 12px;
+        border-radius: 20px;
+        font-size: 0.75rem;
+        font-weight: 500;
+        border: none;
+        cursor: pointer;
+        transition: all 0.3s ease;
+    }
+
+    .chart-badge:hover {
+        background: #4CAF50;
+        color: white;
+    }
+
+    .dropdown-menu {
+        border-radius: 10px;
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+        border: none;
+        padding: 0.5rem 0;
+    }
+
+    .dropdown-item {
+        padding: 0.5rem 1rem;
+        font-size: 0.85rem;
+        transition: all 0.3s ease;
+    }
+
+    .dropdown-item:hover {
+        background: #f8f9fa;
+        color: #4CAF50;
+    }
+
+    .dropdown-item.active {
+        background: #4CAF50;
+        color: white;
+    }
+
+    /* Pie Chart */
+    .pie-chart {
+        width: 200px;
+        height: 200px;
+        margin: 0 auto;
+        position: relative;
+    }
+
+    .legend {
+        margin-top: 1rem;
+    }
+
+    .legend-item {
+        display: flex;
+        align-items: center;
+        margin-bottom: 8px;
+        font-size: 0.9rem;
+    }
+
+    .legend-color {
+        width: 12px;
+        height: 12px;
+        border-radius: 3px;
+        margin-right: 8px;
+    }
+
+    /* Improved Bar Chart */
+    .bar-chart {
+        height: 320px;
+        position: relative;
+        display: flex;
+        align-items: end;
+        padding: 20px;
+        margin-top: 20px;
+    }
+
+    .y-axis {
+        position: absolute;
+        left: 20px;
+        top: 20px;
+        height: 280px;
+        width: 40px;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        padding: 0;
+    }
+
+    .y-label {
+        font-size: 0.8rem;
+        color: #666;
+        width: 35px;
+        text-align: right;
+        line-height: 1;
+        transform: translateY(-50%);
+    }
+
+    .chart-area {
+        margin-left: 70px;
+        display: flex;
+        align-items: end;
+        justify-content: space-evenly;
+        height: 280px;
+        flex: 1;
+        position: relative;
+    }
+
+    /* Grid lines for better readability */
+    .chart-area::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background-image: 
+            linear-gradient(to top, transparent 0%, transparent calc(10% - 1px), #e0e0e0 10%),
+            linear-gradient(to top, transparent 10%, transparent calc(20% - 1px), #e0e0e0 20%),
+            linear-gradient(to top, transparent 20%, transparent calc(30% - 1px), #e0e0e0 30%),
+            linear-gradient(to top, transparent 30%, transparent calc(40% - 1px), #e0e0e0 40%),
+            linear-gradient(to top, transparent 40%, transparent calc(50% - 1px), #e0e0e0 50%),
+            linear-gradient(to top, transparent 50%, transparent calc(60% - 1px), #e0e0e0 60%),
+            linear-gradient(to top, transparent 60%, transparent calc(70% - 1px), #e0e0e0 70%),
+            linear-gradient(to top, transparent 70%, transparent calc(80% - 1px), #e0e0e0 80%),
+            linear-gradient(to top, transparent 80%, transparent calc(90% - 1px), #e0e0e0 90%),
+            linear-gradient(to top, transparent 90%, transparent calc(100% - 1px), #e0e0e0 100%);
+        pointer-events: none;
+    }
+
+    .bar-group {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 8px;
+        position: relative;
+        z-index: 1;
+    }
+
+    .bar-set {
+        display: flex;
+        gap: 8px;
+        align-items: end;
+        height: 250px;
+    }
+
+    .bar {
+        width: 32px;
+        border-radius: 4px 4px 0 0;
+        transition: all 0.3s ease;
+        position: relative;
+        cursor: pointer;
+        box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    }
+
+    .bar:hover {
+        opacity: 0.8;
+        transform: translateY(-3px);
+        box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+    }
+
+    .bar-label {
+        font-size: 1rem;
+        color: #333;
+        font-weight: 600;
+        margin-top: 15px;
+        text-align: center;
+    }
+
+    /* Tooltip for bars */
+    .bar-tooltip {
+        position: absolute;
+        background: #333;
+        color: white;
+        padding: 6px 10px;
+        border-radius: 6px;
+        font-size: 0.8rem;
+        bottom: 100%;
+        left: 50%;
+        transform: translateX(-50%);
+        white-space: nowrap;
+        opacity: 0;
+        pointer-events: none;
+        transition: opacity 0.3s ease;
+        margin-bottom: 8px;
+    }
+
+    .bar-tooltip::after {
+        content: '';
+        position: absolute;
+        top: 100%;
+        left: 50%;
+        transform: translateX(-50%);
+        border: 5px solid transparent;
+        border-top-color: #333;
+    }
+
+    .bar:hover .bar-tooltip {
+        opacity: 1;
+    }
+
+    /* Stress Scale Legend - Fixed Position */
+    .stress-chart-wrapper {
+        position: relative;
+        display: flex;
+    }
+
+    .stress-chart-main {
+        flex: 1;
+        padding-right: 180px;
+    }
+
+    .stress-legend {
+        position: absolute;
+        right: 20px;
+        top: 50%;
+        transform: translateY(-50%);
+        display: flex;
+        flex-direction: column;
+        gap: 15px;
+        background: rgba(255, 255, 255, 0.95);
+        padding: 20px;
+        border-radius: 12px;
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+        border: 1px solid #e0e0e0;
+    }
+
+    .stress-legend .legend-item {
+        display: flex;
+        align-items: center;
+        font-size: 0.9rem;
+        font-weight: 500;
+    }
+
+    .stress-legend .legend-color {
+        width: 18px;
+        height: 18px;
+        border-radius: 4px;
+        margin-right: 12px;
+    }
+
+    /* Data Table Enhancements */
+    .data-table-container {
+        background: white;
+        border-radius: 15px;
+        padding: 1.5rem;
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+    }
+
+    .page-greeting {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        color: white;
+        padding: 2rem;
+        border-radius: 15px;
+        margin-bottom: 2rem;
+    }
+
+    .greeting-text {
+        font-size: 1.5rem;
+        font-weight: 600;
+        margin-bottom: 0.5rem;
+    }
+
+    .greeting-subtitle {
+        opacity: 0.9;
+        font-size: 1rem;
+    }
+
+    .page-heading {
+        margin: 2rem;
+    }
+
+    .table img {
+        height: 60px;
+        border-radius: 8px;
+    }
+
+    .btn-group .btn {
+        margin-right: 5px;
+    }
+
+    .badge {
+        font-size: 0.75rem;
+    }
+</style>
+{% endblock %}
 
 {% block content %}
 <header class="mb-3">
@@ -9,126 +420,307 @@
 </header>
 
 <div class="page-heading">
-    <h3>Dashboard</h3>
-</div>
-<div class="page-content">
-    <section class="row">
-        <div class="col-12 col-lg-9">
-            <div class="row">
-                <div class="col-6 col-lg-3 col-md-6">
-                    <div class="card">
-                        <div class="card-body px-3 py-4-5">
-                            <div class="row">
-                                <div class="col-md-4">
-                                    <div class="stats-icon purple">
-                                        <i class="iconly-boldShow"></i>
-                                    </div>
-                                </div>
-                                <div class="col-md-8">
-                                    <h6 class="text-muted font-semibold">Profile Views</h6>
-                                    <h6 class="font-extrabold mb-0">112.000</h6>
-                                </div>
-                            </div>
-                        </div>
+    <!-- Greeting Section -->
+    <div class="page-greeting">
+        <div class="greeting-text" id="greeting-text">Selamat Pagi, Nina</div>
+        <div class="greeting-subtitle">Berikut ringkasan data kesehatan mental hari ini</div>
+    </div>
+
+    <!-- Top Section: Surat Kesehatan dan Life Balance -->
+    <div class="row mb-4">
+        <div class="col-xl-6 col-md-6 col-12">
+            <div class="stat-card">
+                <div class="stat-icon">
+                    <i class="bi bi-envelope-check"></i>
+                </div>
+                <div class="stat-title">Surat Kesehatan</div>
+                <div class="stat-number">{{ jumlah_surat_kesehatan }}</div>
+                <div class="stat-badge">Aktif</div>
+            </div>
+        </div>
+        <div class="col-xl-6 col-md-6 col-12">
+            <div class="chart-container">
+                <div class="chart-title">
+                    Life Balance
+                    <div class="dropdown">
+                        <button class="btn btn-sm dropdown-toggle chart-badge" type="button" id="lifeBalanceDropdown" data-bs-toggle="dropdown" aria-expanded="false">
+                            Agustus
+                        </button>
+                        <ul class="dropdown-menu" aria-labelledby="lifeBalanceDropdown">
+                            <li><a class="dropdown-item" href="#" onclick="changeLifeBalanceMonth('Januari')">Januari</a></li>
+                            <li><a class="dropdown-item" href="#" onclick="changeLifeBalanceMonth('Februari')">Februari</a></li>
+                            <li><a class="dropdown-item" href="#" onclick="changeLifeBalanceMonth('Maret')">Maret</a></li>
+                            <li><a class="dropdown-item" href="#" onclick="changeLifeBalanceMonth('April')">April</a></li>
+                            <li><a class="dropdown-item" href="#" onclick="changeLifeBalanceMonth('Mei')">Mei</a></li>
+                            <li><a class="dropdown-item" href="#" onclick="changeLifeBalanceMonth('Juni')">Juni</a></li>
+                            <li><a class="dropdown-item" href="#" onclick="changeLifeBalanceMonth('Juli')">Juli</a></li>
+                            <li><a class="dropdown-item active" href="#" onclick="changeLifeBalanceMonth('Agustus')">Agustus</a></li>
+                            <li><a class="dropdown-item" href="#" onclick="changeLifeBalanceMonth('September')">September</a></li>
+                            <li><a class="dropdown-item" href="#" onclick="changeLifeBalanceMonth('Oktober')">Oktober</a></li>
+                            <li><a class="dropdown-item" href="#" onclick="changeLifeBalanceMonth('November')">November</a></li>
+                            <li><a class="dropdown-item" href="#" onclick="changeLifeBalanceMonth('Desember')">Desember</a></li>
+                        </ul>
                     </div>
                 </div>
-                <div class="col-6 col-lg-3 col-md-6">
-                    <div class="card">
-                        <div class="card-body px-3 py-4-5">
-                            <div class="row">
-                                <div class="col-md-4">
-                                    <div class="stats-icon blue">
-                                        <i class="iconly-boldProfile"></i>
-                                    </div>
-                                </div>
-                                <div class="col-md-8">
-                                    <h6 class="text-muted font-semibold">Followers</h6>
-                                    <h6 class="font-extrabold mb-0">183.000</h6>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+                <div class="pie-chart">
+                    <canvas id="pieChart" width="200" height="200"></canvas>
                 </div>
-                <div class="col-6 col-lg-3 col-md-6">
-                    <div class="card">
-                        <div class="card-body px-3 py-4-5">
-                            <div class="row">
-                                <div class="col-md-4">
-                                    <div class="stats-icon green">
-                                        <i class="iconly-boldAdd-User"></i>
-                                    </div>
-                                </div>
-                                <div class="col-md-8">
-                                    <h6 class="text-muted font-semibold">Following</h6>
-                                    <h6 class="font-extrabold mb-0">80.000</h6>
-                                </div>
-                            </div>
-                        </div>
+                <div class="legend">
+                    <div class="legend-item">
+                        <div class="legend-color" style="background: #4CAF50;"></div>
+                        <span>Rendah</span>
                     </div>
-                </div>
-                <div class="col-6 col-lg-3 col-md-6">
-                    <div class="card">
-                        <div class="card-body px-3 py-4-5">
-                            <div class="row">
-                                <div class="col-md-4">
-                                    <div class="stats-icon red">
-                                        <i class="iconly-boldBookmark"></i>
-                                    </div>
-                                </div>
-                                <div class="col-md-8">
-                                    <h6 class="text-muted font-semibold">Saved Post</h6>
-                                    <h6 class="font-extrabold mb-0">112</h6>
-                                </div>
-                            </div>
-                        </div>
+                    <div class="legend-item">
+                        <div class="legend-color" style="background: #FFC107;"></div>
+                        <span>Sedang</span>
+                    </div>
+                    <div class="legend-item">
+                        <div class="legend-color" style="background: #F44336;"></div>
+                        <span>Tinggi</span>
                     </div>
                 </div>
             </div>
         </div>
-        <div class="col-12 col-lg-3">
-            <div class="card">
-                <div class="card-body py-4 px-5">
-                    <div class="d-flex align-items-center">
-                        <div class="avatar avatar-xl">
-                            <img src="{{url_for('static',filename='images/faces/1.jpg')}}" alt="Face 1">
+    </div>
+
+    <!-- Stress Scale Section -->
+    <div class="row mb-4">
+        <div class="col-12">
+            <div class="chart-container">
+                <div class="chart-title">
+                    Statistik Stress Scale
+                    <div class="dropdown">
+                        <button class="btn btn-sm dropdown-toggle chart-badge" type="button" id="monthDropdown" data-bs-toggle="dropdown" aria-expanded="false">
+                            Agustus
+                        </button>
+                        <ul class="dropdown-menu" aria-labelledby="monthDropdown">
+                            <li><a class="dropdown-item" href="#" onclick="changeMonth('Januari')">Januari</a></li>
+                            <li><a class="dropdown-item" href="#" onclick="changeMonth('Februari')">Februari</a></li>
+                            <li><a class="dropdown-item" href="#" onclick="changeMonth('Maret')">Maret</a></li>
+                            <li><a class="dropdown-item" href="#" onclick="changeMonth('April')">April</a></li>
+                            <li><a class="dropdown-item" href="#" onclick="changeMonth('Mei')">Mei</a></li>
+                            <li><a class="dropdown-item" href="#" onclick="changeMonth('Juni')">Juni</a></li>
+                            <li><a class="dropdown-item" href="#" onclick="changeMonth('Juli')">Juli</a></li>
+                            <li><a class="dropdown-item active" href="#" onclick="changeMonth('Agustus')">Agustus</a></li>
+                            <li><a class="dropdown-item" href="#" onclick="changeMonth('September')">September</a></li>
+                            <li><a class="dropdown-item" href="#" onclick="changeMonth('Oktober')">Oktober</a></li>
+                            <li><a class="dropdown-item" href="#" onclick="changeMonth('November')">November</a></li>
+                            <li><a class="dropdown-item" href="#" onclick="changeMonth('Desember')">Desember</a></li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="stress-chart-wrapper">
+                    <div class="stress-chart-main">
+                        <div class="bar-chart">
+                            <!-- Y-axis labels with proper 0-100 scaling -->
+                            <div class="y-axis">
+                                <div class="y-label" style="top: 0%;">100</div>
+                                <div class="y-label" style="top: 10%;">90</div>
+                                <div class="y-label" style="top: 20%;">80</div>
+                                <div class="y-label" style="top: 30%;">70</div>
+                                <div class="y-label" style="top: 40%;">60</div>
+                                <div class="y-label" style="top: 50%;">50</div>
+                                <div class="y-label" style="top: 60%;">40</div>
+                                <div class="y-label" style="top: 70%;">30</div>
+                                <div class="y-label" style="top: 80%;">20</div>
+                                <div class="y-label" style="top: 90%;">10</div>
+                                <div class="y-label" style="top: 100%;">0</div>
+                            </div>
+                            
+                            <div class="chart-area">
+                                <!-- Depression Group -->
+                                <div class="bar-group">
+                                    <div class="bar-set">
+                                        <div class="bar" style="height: 45%; background: #4CAF50;">
+                                            <div class="bar-tooltip">Normal: 45</div>
+                                        </div>
+                                        <div class="bar" style="height: 25%; background: #FFC107;">
+                                            <div class="bar-tooltip">Ringan: 25</div>
+                                        </div>
+                                        <div class="bar" style="height: 20%; background: #F44336;">
+                                            <div class="bar-tooltip">Sedang: 20</div>
+                                        </div>
+                                      
+                                    </div>
+                                    <div class="bar-label">Depression</div>
+                                </div>
+                                
+                                <!-- Anxiety Group -->
+                                <div class="bar-group">
+                                    <div class="bar-set">
+                                        <div class="bar" style="height: 35%; background: #4CAF50;">
+                                            <div class="bar-tooltip">Normal: 35</div>
+                                        </div>
+                                        <div class="bar" style="height: 30%; background: #FFC107;">
+                                            <div class="bar-tooltip">Ringan: 30</div>
+                                        </div>
+                                        <div class="bar" style="height: 25%; background: #F44336;">
+                                            <div class="bar-tooltip">Sedang: 25</div>
+                                        </div>
+                                       
+                                    </div>
+                                    <div class="bar-label">Anxiety</div>
+                                </div>
+                                
+                                <!-- Stress Group -->
+                                <div class="bar-group">
+                                    <div class="bar-set">
+                                        <div class="bar" style="height: 30%; background: #4CAF50;">
+                                            <div class="bar-tooltip">Normal: 30</div>
+                                        </div>
+                                        <div class="bar" style="height: 35%; background: #FFC107;">
+                                            <div class="bar-tooltip">Ringan: 35</div>
+                                        </div>
+                                        <div class="bar" style="height: 25%; background: #F44336;">
+                                            <div class="bar-tooltip">Sedang: 25</div>
+                                        </div>
+                                       
+                                    </div>
+                                    <div class="bar-label">Stress</div>
+                                </div>
+                            </div>
                         </div>
-                        <div class="ms-3 name">
-                            <h5 class="font-bold">{{current_user.nama}}</h5>
-                            <h6 class="text-muted mb-0" id="roleName"></h6>
+                    </div>
+                    
+                    <!-- Legend positioned on the right -->
+                    <div class="stress-legend">
+                        <div class="legend-item">
+                            <div class="legend-color" style="background: #4CAF50;"></div>
+                            <span>Normal (0-21)</span>
                         </div>
+                        <div class="legend-item">
+                            <div class="legend-color" style="background: #FFC107;"></div>
+                            <span>Ringan (22-35)</span>
+                        </div>
+                        <div class="legend-item">
+                            <div class="legend-color" style="background: #F44336;"></div>
+                            <span>Sedang (36-50)</span>
+                        </div>
+                        
                     </div>
                 </div>
             </div>
-            
-            <div class="card">
-                <div class="card-header">
-                    <h4>Visitors Profile</h4>
-                </div>
-                <div class="card-body">
-                    <div id="chart-visitors-profile"></div>
-                </div>
-            </div>
         </div>
-    </section>
+    </div>
 </div>
-{% endblock %}
-{% block script %}
-<script src="{{url_for('static',filename='js/pages/dashboard.js')}}"></script>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/datatables/1.10.21/js/jquery.dataTables.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/datatables/1.10.21/js/dataTables.bootstrap5.min.js"></script>
+
 <script>
-    $(document).ready(function(){
-        var role = "{{current_user.role}}"
-        $('#roleName').text(slugToRegularString(role))
-    })
-    function slugToRegularString(slug) {
-        // Replace hyphens with spaces
-        let regularString = slug.replace(/_/g, ' ');
+    // Initialize DataTable
+    $(document).ready(function() {
+        $('#dataTable').DataTable({
+            responsive: true,
+            language: {
+                url: 'https://cdn.datatables.net/plug-ins/1.10.21/i18n/Indonesian.json'
+            }
+        });
+        
+        // Draw the pie chart
+        drawPieChart();
+        
+        // Update greeting based on time
+        updateGreeting();
+    });
 
-        // Capitalize the first letter of each word
-        regularString = regularString.replace(/\b[a-z]/g, (char) => char.toUpperCase());
-
-        return regularString;
+    // Pie Chart
+    function drawPieChart() {
+        const canvas = document.getElementById('pieChart');
+        const ctx = canvas.getContext('2d');
+        const centerX = canvas.width / 2;
+        const centerY = canvas.height / 2;
+        const radius = 80;
+        
+        const data = [
+            { label: 'Rendah', value: 35, color: '#4CAF50' },
+            { label: 'Sedang', value: 40, color: '#FFC107' },
+            { label: 'Tinggi', value: 25, color: '#F44336' }
+        ];
+        
+        let currentAngle = -Math.PI / 2;
+        
+        data.forEach(segment => {
+            const sliceAngle = (segment.value / 100) * 2 * Math.PI;
+            
+            ctx.beginPath();
+            ctx.moveTo(centerX, centerY);
+            ctx.arc(centerX, centerY, radius, currentAngle, currentAngle + sliceAngle);
+            ctx.closePath();
+            ctx.fillStyle = segment.color;
+            ctx.fill();
+            
+            currentAngle += sliceAngle;
+        });
     }
+
+    // Change Month Function for Life Balance
+    function changeLifeBalanceMonth(month) {
+        // Update dropdown button text
+        document.getElementById('lifeBalanceDropdown').textContent = month;
+        
+        // Update active state in dropdown
+        document.querySelectorAll('#lifeBalanceDropdown + .dropdown-menu .dropdown-item').forEach(item => {
+            item.classList.remove('active');
+        });
+        event.target.classList.add('active');
+        
+        console.log('Selected Life Balance month:', month);
+    }
+
+    // Change Month Function for Stress Scale
+    function changeMonth(month) {
+        // Update dropdown button text
+        document.getElementById('monthDropdown').textContent = month;
+        
+        // Update active state in dropdown
+        document.querySelectorAll('#monthDropdown + .dropdown-menu .dropdown-item').forEach(item => {
+            item.classList.remove('active');
+        });
+        event.target.classList.add('active');
+        
+        console.log('Selected Stress Scale month:', month);
+    }
+
+    function updateGreeting() {
+        const now = new Date();
+        const hour = now.getHours();
+        const greetingText = document.getElementById('greeting-text');
+        
+        if (hour < 12) {
+            greetingText.textContent = 'Selamat Pagi';
+        } else if (hour < 18) {
+            greetingText.textContent = 'Selamat Siang';
+        } else {
+            greetingText.textContent = 'Selamat Malam';
+        }
+    }
+
+    // Add some sample interaction
+    document.addEventListener('DOMContentLoaded', function() {
+        // Add click events for buttons
+        document.querySelectorAll('.btn-outline-success').forEach(btn => {
+            btn.addEventListener('click', function() {
+                alert('Fungsi Edit');
+            });
+        });
+
+        document.querySelectorAll('.btn-outline-danger').forEach(btn => {
+            btn.addEventListener('click', function() {
+                if(confirm('Apakah Anda yakin ingin menghapus data ini?')) {
+                    alert('Data dihapus!');
+                }
+            });
+        });
+
+        const addButton = document.querySelector('.btn-primary');
+        if(addButton) {
+            addButton.addEventListener('click', function() {
+                alert('Redirect ke halaman tambah data');
+            });
+        }
+    });
 </script>
 {% endblock %}
-
-

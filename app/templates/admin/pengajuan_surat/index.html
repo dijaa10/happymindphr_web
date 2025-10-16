@@ -1,0 +1,184 @@
+{% extends "admin/layouts/main.html" %} {% block title %} Data Pengajuan Surat {% endblock
+    %} {% block content %}
+    <header class="mb-3">
+      <a href="#" class="burger-btn d-block d-xl-none">
+        <i class="bi bi-justify fs-3"></i>
+      </a>
+    </header>
+    
+    <div class="page-heading">
+      <div class="page-title">
+        <div class="row">
+          <div class="col-12 col-md-6 order-md-1 order-last">
+            <h3>Data Pengajuan Surat</h3>
+            <p class="text-subtitle text-muted">
+              Dibawah ini data mahasiswa yang mengajukan surat kesehatan dan sudah melakukan test awal
+            </p>
+          </div>
+          <div class="col-12 col-md-6 order-md-2 order-first">
+            <nav
+              aria-label="breadcrumb"
+              class="breadcrumb-header float-start float-lg-end"
+            >
+              <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="index.html">Dashboard</a></li>
+                <li class="breadcrumb-item active" aria-current="page">
+                  Data Pengajuan Surat
+                </li>
+              </ol>
+            </nav>
+          </div>
+        </div>
+      </div>
+      <section class="section">
+        <div class="card">
+          <!-- <div class="card-header">Simple Datatable</div> -->
+          <div class="card-body">
+            <div class="table-responsive">
+              <table class="table" id="data">
+                <thead>
+                  <tr>
+                    <th>No</th>
+                    <th>id</th>
+                    <th>Nama</th>
+                    <th>Hasil Stress Scale</th>
+                    <th>Hasil Life Balance</th>
+                    <th>Waktu Mulai</th>
+                    <th>Waktu Berakhir</th>
+                    <th>Aksi</th>
+                  </tr>
+                </thead>
+              </table>
+            </div>
+            
+          </div>
+        </div>
+      </section>
+    </div>
+    
+    {% endblock %} {% block script %}
+    <script>
+      $(document).ready(function () {
+        var table = $("#data").DataTable({
+          columnDefs: [
+            {
+              searchable: true,
+              orderable: true,
+              targets: 2,
+            },
+          ],
+          processing: true,
+          ajax: {
+            url: "{{url_for('pengajuan_surat_json')}}",
+            type: "GET",
+            beforeSend: function (xhr) {
+              xhr.setRequestHeader("Content-Type", "application/json");
+            },
+          },
+          columns: [
+            {
+              data: "id_row",
+              name: "id_row",
+              render: function (data, type, row, meta) {
+                return meta.row + meta.settings._iDisplayStart + 1;
+              },
+            },
+            {
+              data:"mahasiswa_id",
+              name:"mahasiswa_id",
+              visible:false
+            },
+            {
+              data:"mahasiswa_nama",
+              name:"mahasiswa_nama",
+            },
+            {
+              data:"dass21_total",
+              name:"dass21_total",
+              sortable: false,
+              render: function (data, type, row, meta) {
+                        data = row.dass21_total
+                        // const jsObject = JSON.parse(row.dass21_total);
+                        return `  
+                        <table class="table" id="data">
+                        <thead>
+                            <tr>
+                                <th>Kategori</th>
+                                <th>Score</th>
+                                <th>Level</th>
+                            </tr>
+                        </thead>
+                         <tbody>
+                            <tr>
+                                <td>Anxiety</td>
+                                <td>${data.anxiety.a_score}</td>
+                                <td>${data.anxiety.level}</td>
+                            </tr>
+                            <tr>
+                                <td>Depression</td>
+                                <td>${data.depression.d_score}</td>
+                                <td>${data.depression.level}</td>
+                            </tr>
+                            <tr>
+                                 <td>Stress</td>
+                                <td>${data.stress.s_score}</td>
+                                <td>${data.stress.level}</td>
+                            </tr>
+                        </tbody>
+                    </table>`;
+                    },
+            },
+            {
+              data:"life_balance_total",
+              name:"life_balance_total",
+              sortable: false,
+              render: function (data, type, row, meta) {
+                data = row.life_balance_total
+                return `  
+                        <table class="table" id="data">
+                        <thead>
+                            <tr>
+                              <th>Score</th>
+                              <th>Penjelasan</th>
+                            </tr>
+                        </thead>
+                         <tbody>
+                            
+                            <tr>
+                              <td>${data.result}</td>
+                              <td>${data.explanation}</td>
+                            </tr>
+                            <tr><td></td></tr>
+                        </tbody>
+                    </table>`;
+              },
+            },
+            {
+              data:"dass21_test_start_time",
+              name:"dass21_test_start_time",
+              sortable: false,
+            },
+            {
+              data:"dass21_test_end_time",
+              name:"dass21_test_end_time",
+              sortable: false,
+            },
+            
+            
+            {
+              data:null,
+              name:"aksi",
+              sortable: false,
+              render: (data, type, row, meta) => {
+                var edit_url = "{{url_for('pengajuan_surat_edit',id_mahasiswa=':var',waktu_mulai=':waktu_mulai')}}"
+                return `<div style="height:36px">
+                    <a href="${edit_url.replace(':var',data.mahasiswa_id).replace(':waktu_mulai',data.dass21_test_start_time)}" class="btn icon btn-outline-success"><i class="bi bi-info-circle"></i></a>
+                  </div>`
+              }
+            }
+          ],
+        });
+      });
+    </script>
+    {% endblock %}
+    

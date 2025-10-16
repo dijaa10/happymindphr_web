@@ -1,0 +1,261 @@
+{% extends "admin/layouts/main.html" %}
+{% block title %} Artikel {% endblock%}
+{% block style %}
+<style>
+    .filepond--root {
+        height: 12rem;
+    }
+
+    .filepond--drop-label.filepond--drop-label label {
+        margin-top: 8rem;
+    }
+
+    .tox .tox-promotion {
+        visibility: hidden;
+    }
+
+    .nav-tabs .nav-link.active{
+        color: #3b867e !important;
+    }
+    .nav-tabs .nav-link.active:after{
+        background-color: #3b867e !important;
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<header class="mb-3">
+    <a href="#" class="burger-btn d-block d-xl-none">
+        <i class="bi bi-justify fs-3"></i>
+    </a>
+</header>
+
+<div class="page-heading">
+    <div class="page-title">
+        <div class="row">
+            <div class="col-12 col-md-6 order-md-1 order-last">
+                <h3>Tambah Data Artikel</h3>
+            </div>
+            <div class="col-12 col-md-6 order-md-2 order-first">
+                <nav aria-label="breadcrumb" class="breadcrumb-header float-start float-lg-end">
+                    <ol class="breadcrumb">
+                        <li class="breadcrumb-item"><a href="index.html">Dashboard</a></li>
+                        <li class="breadcrumb-item">
+                            <a href="{{url_for('musik_index')}}">Data Artikel</a>
+                        </li>
+                        <li class="breadcrumb-item active" aria-current="page">
+                            Tambah Data Artikel
+                        </li>
+                    </ol>
+                </nav>
+            </div>
+        </div>
+    </div>
+    <section class="section">
+        <div class="card">
+            <div class="card-header">Tambah Data</div>
+            <div class="card-body">
+                <ul class="nav nav-tabs" id="myTab" role="tablist">
+                    <li class="nav-item" role="presentation">
+                        <a class="nav-link active" style="color: #3b867e !important;" id="home-tab" data-bs-toggle="tab" href="#home" role="tab"
+                            aria-controls="home" aria-selected="false" tabindex="-1">Web Scrapper</a>
+                    </li>
+                    <li class="nav-item" role="presentation">
+                        <a class="nav-link" style="color: #3b867e !important;" id="profile-tab" data-bs-toggle="tab" href="#profile" role="tab"
+                            aria-controls="profile" aria-selected="false" tabindex="-1">Manual</a>
+                    </li>
+                </ul>
+                <div class="tab-content" id="myTabContent">
+                    <div class="tab-pane fade active show" id="home" role="tabpanel" aria-labelledby="home-tab">
+                        <div style="margin-top: 10px;">
+                            <div class="alert alert-warning"><i class="bi bi-exclamation-triangle"></i>
+                                <b>Perhatian!</b> Fitur dalam pengembangan
+                            </div>
+                        </div>
+                        <p class="my-2">Web scraping adalah sebuah teknik yang digunakan untuk mengekstrak data dari
+                            situs web. Ia bekerja dengan cara membaca kode HTML dari sebuah halaman web, lalu mencari
+                            dan mengambil informasi spesifik yang dibutuhkan, seperti teks, gambar, atau tautan. Data
+                            yang diambil kemudian disimpan dalam format yang terstruktur, seperti spreadsheet atau
+                            database.</p>
+                        <p class="my-2">Saat ini, fitur web scraping sedang dalam tahap pengembangan. Untuk sementara,
+                            fitur ini hanya dapat digunakan untuk mengekstrak data dari situs-situs berikut:
+                            DetikHealth, Halodoc, dan Alodokter. Kami terus berupaya untuk meningkatkan kemampuannya
+                            agar dapat mengekstrak data dengan lebih efisien, akurat, dan sesuai dengan kebutuhan
+                            pengguna</p>
+                        <p class="my-2 text-warning"><b>Perhatian, anda harus memeriksa ulang data yang sudah diambil
+                                untuk
+                                mencegah kesalahan pada isi artikel</b></p>
+                        <form action="{{url_for('artikel_store_scraping')}}" method="post">
+                            <div class="col-md-12">
+                                <div class="form-group">
+                                    <label for="url">Tautan Artikel</label>
+                                    <input type="text" required id="url" class="form-control" name="url"
+                                        placeholder="https://">
+                                </div>
+                            </div>
+                            <div class="col-12 d-flex justify-content-end pt-2">
+                                <button type="submit" class="btn btn-primary me-1 mb-1">Simpan</button>
+                            </div>
+                        </form>
+                    </div>
+                    <div class="tab-pane fade" id="profile" role="tabpanel" aria-labelledby="profile-tab">
+                        <form action="{{url_for('artikel_store_data')}}" method="post" id="formTambahData">
+                            <div class="row">
+                                <div class="col-md-6 col-12">
+                                    <div class="row">
+                                        <div class="col-12">
+                                            <div class="form-group">
+                                                <label for="judul">Judul</label>
+                                                <input type="text" required id="judul" class="form-control" name="judul"
+                                                    placeholder="Judul Artikel">
+                                            </div>
+                                        </div>
+                                        <div class="col-12">
+                                            <div class="form-group">
+                                                <label for="sumber">Sumber</label>
+                                                <input type="text" required id="sumber" class="form-control"
+                                                    name="sumber" placeholder="Sumber">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6 col-12">
+                                    <div class="col-12">
+                                        <input type="file" name="image_file" id="image_file">
+
+                                    </div>
+                                </div>
+                                <div class="col-md-12">
+                                    <p>Isi Artikel</p>
+                                    <textarea name="isi_artikel" id="isi_artikel" required cols="30"
+                                        rows="10"></textarea>
+                                </div>
+                            </div>
+
+                            <div class="col-12 d-flex justify-content-end pt-2">
+                                <button type="submit" class="btn btn-primary me-1 mb-1">Simpan</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+</div>
+
+{% endblock %}
+{% block script %}
+{%- with messages = get_flashed_messages(with_categories=True) %}
+{%- if messages %}
+{% for category, message in messages %}
+<script>
+    Swal.fire({
+        title: "{{category.capitalize()}}",
+        text: "{{message}}",
+        icon: "{{category}}",
+    })
+</script>
+{% endfor %}
+{%- endif %}
+{%- endwith %}
+<script src="{{url_for('static',filename='vendors/tinymce/tinymce.min.js')}}"></script>
+<script src="{{url_for('static',filename='vendors/tinymce/plugins/code/plugin.min.js')}}"></script>
+<script>
+    $(document).ready(function () {
+        tinymce.init({
+            selector: '#isi_artikel', onchange_callback: function (editor) {
+                tinymce.triggerSave();
+                $("#" + editor.id).valid();
+            }
+        });
+
+        FilePond.registerPlugin(
+            FilePondPluginImagePreview,
+            FilePondPluginFileValidateType);
+        loadFilePond()
+        $.validator.addMethod("checkAlpha", function (value, element) {
+            return (new RegExp("^[a-zA-Z ]*$").test(value))
+        }, "Kolom harus diisi dengan huruf");
+        $.validator.addMethod("tinymceRequired", function (value, element) {
+            // Get content from TinyMCE instance
+            var editorContent = tinymce.get(element.id).getContent({ format: 'text' });
+            // Strip HTML tags and trim whitespace
+            var strippedContent = editorContent.replace(/<[^>]*>/g, '').trim();
+            return strippedContent.length > 0;
+        }, "Isi artikel tidak boleh kosong");
+
+        $.validator.addMethod("checkAlphaSym", function (value, element) {
+            return (new RegExp("^[a-zA-Z .,]*$").test(value))
+        }, "Kolom harus diisi dengan huruf");
+        $('#formTambahData').submit(function () {
+            // update underlying textarea before submit validation
+            tinymce.triggerSave();
+        }).validate({
+            // wrapper: "#form-input",
+            rules: {
+                judul: {
+                    required: true,
+                },
+                sumber: {
+                    required: true,
+                },
+                // isi_artikel: {
+                //     // required: true,
+                //     // tinymceRequired: true
+                // }
+
+
+            },
+            //hightlight: function(element) {
+            //    $(element).addClass('is-invalid')
+            //},
+            errorElement: "span",
+            errorPlacement: function (error, element) {
+                $(element).addClass('is-invalid')
+                error.addClass("invalid-feedback");
+                // error.appendTo("#form-input");
+
+                if (element.is("textarea")) {
+                    error.insertAfter(element.before());
+                } else {
+                    error.insertAfter(element);
+                }
+                // Add the `help-block` class to the error element
+
+                // if (element.prop("type") === "checkbox") {
+                //     error.insertAfter(element.parent("label"));
+                // } else {
+                //     error.insertAfter(element);
+                // }
+            },
+            success: function (label, element) {
+                $(element).removeClass('is-invalid');
+            }
+        });
+    });
+    function loadFilePond() {
+        var file_pond = $('#image_file').filepond({
+            acceptedFileTypes: ['image/*'],
+            labelFileProcessingComplete: `Upload Berhasil`,
+            labelInvalidField: 'File tidak didukung',
+            labelTapToUndo: `ketuk untuk membatalkan`,
+            labelTapToCancel: `ketuk untuk membatalkan`,
+            labelFileProcessingError: `Gagal Memproses`,
+            labelTapToRetry: `ketuk untuk coba lagi`,
+            labelFileProcessing: `Sedang memproses`,
+            labelIdle: `Seret dan tempel atau <span class="filepond--label-action">Pilih Gambar</span> untuk mengunggah file gambar`,
+            labelInvalidField: `File tidak didukung`,
+            credits: false,
+            fileValidateTypeDetectType: [],
+            server: {
+                process: "{{url_for('upload_artikel_file')}}",
+                revert: {
+                    url: "{{url_for('remove_artikel_file')}}",
+                    method: 'GET',
+                },
+            }
+        });
+    }
+</script>
+{% endblock %}

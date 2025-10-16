@@ -1,0 +1,17 @@
+beautifulsoup4==4.11.2
+Flask==3.1.2
+Flask_Bcrypt==1.0.1
+Flask_JWT_Extended==4.5.3
+Flask_Login==0.6.3
+Flask_MySQLdb==2.0.0
+flask_sqlalchemy==3.1.1
+flask_wtf==1.2.2
+Pillow==11.3.0
+pydantic==2.11.7
+PyJWT==2.8.0
+PyJWT==2.10.1
+python-dotenv==1.1.1
+SQLAlchemy==2.0.23
+ulid_py==1.1.0
+Werkzeug==3.1.3
+WTForms==3.2.1

@@ -1,0 +1,153 @@
+{% extends "admin/layouts/main.html" %}
+{% block title %} Admin {% endblock%}
+
+{% block content %}
+<header class="mb-3">
+    <a href="#" class="burger-btn d-block d-xl-none">
+        <i class="bi bi-justify fs-3"></i>
+    </a>
+</header>
+
+<div class="page-heading">
+    <div class="page-title">
+        <div class="row">
+            <div class="col-12 col-md-6 order-md-1 order-last">
+                <h3>Edit Data Admin</h3>
+            </div>
+            <div class="col-12 col-md-6 order-md-2 order-first">
+                <nav aria-label="breadcrumb" class="breadcrumb-header float-start float-lg-end">
+                    <ol class="breadcrumb">
+                        <li class="breadcrumb-item"><a href="index.html">Dashboard</a></li>
+                        <li class="breadcrumb-item">
+                            <a href="{{url_for('musik_index')}}">Data Admin</a>
+                        </li>
+                        <li class="breadcrumb-item active" aria-current="page">
+                            Edit Data Admin
+                        </li>
+                    </ol>
+                </nav>
+            </div>
+        </div>
+    </div>
+    <section class="section">
+        <div class="card">
+            <div class="card-header">Edit Data</div>
+            <div class="card-body">
+                <form action="" method="post" id="formUpdate">
+                    <div class="row">
+                        <div class="col-12">
+                            <div class="form-group">
+                                <label for="nama">Nama</label>
+                                <input type="text" required id="nama" class="form-control" name="nama" value="{{data.nama}}"
+                                    placeholder="Nama">
+                            </div>
+                        </div>
+                        <div class="col-12">
+                            <div class="form-group">
+                                <label for="username">Username</label>
+                                <input type="text" required id="username" class="form-control" name="username" value="{{data.username}}"
+                                    placeholder="Username">
+                            </div>
+                        </div>
+                        <div class="col-12">
+                            <div class="form-group">
+                                <label for="password">Password</label>
+                                <input type="password" required id="password" class="form-control" name="password"
+                                    placeholder="Password">
+                            </div>
+                        </div>
+                        <div class="col-12">
+                            <div class="form-group">
+                                <label for="role">Role</label>
+                                <select class="form-select" id="role" name="role">
+                                    <option selected>Pilih..</option>
+                                    <option {{"selected" if data.role == "admin" else ""}} value="admin">Admin</option>
+                                    <option {{"selected" if data.role == "super_admin" else ""}} value="super_admin">Super Admin</option>
+                                </select>
+                            </div>
+                        </div>
+
+                    </div>
+
+                    <div class="col-12 d-flex justify-content-end">
+                        <button type="submit" class="btn btn-primary me-1 mb-1">Simpan</button>
+                        <a href="{{url_for('data_admin_index')}}" class="btn btn-light me-1 mb-1">Kembali</a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </section>
+</div>
+
+{% endblock %}
+{% block script %}
+
+{%- with messages = get_flashed_messages(with_categories=True) %}
+{%- if messages %}
+{% for category, message in messages %}
+<script>
+    Swal.fire({
+        title: "{{message}}",
+        icon: "error",
+    })
+</script>
+{% endfor %}
+{%- endif %}
+{%- endwith %}
+
+<script>
+    $(document).ready(function () {
+        $.validator.addMethod("checkAlpha", function (value, element) {
+            return (new RegExp("^[a-zA-Z ]*$").test(value))
+        }, "Kolom harus diisi dengan huruf");
+        $.validator.addMethod("checkAlphaSym", function (value, element) {
+            return (new RegExp("^[a-zA-Z .,]*$").test(value))
+        }, "Kolom harus diisi dengan huruf");
+        $.validator.addMethod("enumVal", function (value, element, params) {
+            // 'params' would be the array of valid enum values
+            return params.includes(value);
+        }, "Mohon pilih sesuai pilihan yang disediakan");
+        $('#formUpdate').validate({
+            // wrapper: "#form-input",
+            rules: {
+                nama: {
+                    required: true,
+                    checkAlpha: true,
+                },
+                username: {
+                    required: true,
+                },
+                password: {
+                    required: true,
+                },
+                role: {
+                    required: true,
+                    enumVal: ['super_admin', 'admin']
+                },
+
+
+            },
+            //hightlight: function(element) {
+            //    $(element).addClass('is-invalid')
+            //},
+            errorElement: "span",
+            errorPlacement: function (error, element) {
+                $(element).addClass('is-invalid')
+                error.addClass("invalid-feedback");
+                // error.appendTo("#form-input");
+                error.insertAfter(element);
+                // Add the `help-block` class to the error element
+
+                // if (element.prop("type") === "checkbox") {
+                //     error.insertAfter(element.parent("label"));
+                // } else {
+                //     error.insertAfter(element);
+                // }
+            },
+            success: function (label, element) {
+                $(element).removeClass('is-invalid');
+            }
+        });
+    });
+</script>
+{% endblock %}

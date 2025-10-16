@@ -1,0 +1,234 @@
+{% extends "admin/layouts/main.html" %} {% block title %} Mahasiswa Detail {%
+endblock%} {% block content %}
+<header class="mb-3">
+    <a href="#" class="burger-btn d-block d-xl-none">
+        <i class="bi bi-justify fs-3"></i>
+    </a>
+</header>
+
+<div class="page-heading">
+    <div class="page-title">
+        <div class="row">
+            <div class="col-12 col-md-6 order-md-1 order-last">
+                <h3>Detail Mahasiswa</h3>
+            </div>
+            <div class="col-12 col-md-6 order-md-2 order-first">
+                <nav aria-label="breadcrumb" class="breadcrumb-header float-start float-lg-end">
+                    <ol class="breadcrumb">
+                        <li class="breadcrumb-item"><a href="index.html">Dashboard</a></li>
+                        <li class="breadcrumb-item">
+                            <a href="{{url_for('mahasiswa_index')}}">Data Mahasiswa</a>
+                        </li>
+                        <li class="breadcrumb-item active" aria-current="page">
+                            Detail Mahasiswa
+                        </li>
+                    </ol>
+                </nav>
+            </div>
+        </div>
+    </div>
+    <section class="section">
+        <div class="card">
+            <div class="card-header">Data {{ data.nama }}</div>
+            <div class="card-body">
+                <form class="form">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <label for="first-name-column">Nama</label>
+                                <input type="text" id="first-name-column" class="form-control" placeholder="First Name"
+                                    disabled value="{{data.nama}}" />
+                            </div>
+                        </div>
+
+                        <div class="col-md-6 col-12">
+                            <div class="form-group">
+                                <label for="email-id-column">NIM</label>
+                                <input type="text" id="email-id-column" class="form-control" name="email-id-column"
+                                    disabled value="{{data.nim}}" placeholder="Email" />
+                            </div>
+                        </div>
+                        <div class="col-md-6 col-12">
+                            <div class="form-group">
+                                <label for="email-id-column">Tanggal Lahir</label>
+                                <input type="text" id="email-id-column" class="form-control" name="email-id-column"
+                                    disabled value="{{data.tanggal_lahir}}" placeholder="Email" />
+                            </div>
+                        </div>
+                        <div class="col-md-6 col-12">
+                            <div class="form-group">
+                                <label for="last-name-column">Jenis Kelamin</label>
+                                <input type="text" id="last-name-column" class="form-control" disabled
+                                    value="{{'Laki-Laki' if data.jenis_kelamin == 'L' else 'Perempuan'}}" />
+                            </div>
+                        </div>
+                        <div class="col-md-6 col-12">
+                            <div class="form-group">
+                                <label for="email-id-column">Email</label>
+                                <input type="text" id="email-id-column" class="form-control" name="email-id-column"
+                                    disabled value="{{data.email}}" placeholder="Email" />
+                            </div>
+                        </div>
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <label for="country-floating">Alamat</label>
+                                <textarea disabled class="form-control">{{data.alamat}}</textarea>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+        <div class="card">
+            <div class="card-header">Sesi Curhat Mahasiswa</div>
+            <div class="card-body">
+                <div class="table-responsive">
+                    <table class="table " id="data">
+                        <thead>
+                            <tr>
+                                <th>No</th>
+                                <th>Hasil Stress Scale</th>
+                                <th>Hasil QoL</th>
+                                <th>Waktu Mulai</th>
+                                <th>Waktu Berakhir</th>
+                                <th>Aksi</th>
+                            </tr>
+                        </thead>
+                     
+                    </table>
+                </div>
+            </div>
+        </div>
+    </section>
+</div>
+
+{% endblock %} {% block script %}
+<script>
+    $(document).ready(function () {
+        var url = "{{url_for('curhat_mahasiswa_json',mahasiswa_id=':mahasiswa_id')}}";
+        var table = $("#data").DataTable({
+            columnDefs: [
+                {
+                    searchable: true,
+                    orderable: true,
+                    targets: 3,
+                },
+            ],
+            processing: true,
+            ajax: {
+                url: url.replace(':mahasiswa_id', "{{data.id}}"),
+                type: "GET",
+                beforeSend: function (xhr) {
+                    xhr.setRequestHeader("Content-Type", "application/json");
+                },
+            },
+            columns: [
+                {
+                    data: "id_row",
+                    name: "id_row",
+                    render: function (data, type, row, meta) {
+                        return meta.row + meta.settings._iDisplayStart + 1;
+                    },
+                },
+              
+                {
+                    data: "dass21_total",
+                    name: "dass21_total",
+                    render: function (data, type, row, meta) {
+                        data = row.dass21_total
+                        // const jsObject = JSON.parse(row.dass21_total);
+                        return `  
+                        <table class="table" id="data">
+                        <thead>
+                            <tr>
+                                <th>Kategori</th>
+                                <th>Score</th>
+                                <th>Level</th>
+                            </tr>
+                        </thead>
+                         <tbody>
+                            <tr>
+                                <td>Anxiety</td>
+                                <td>${data.anxiety.a_score}</td>
+                                <td>${data.anxiety.level}</td>
+                            </tr>
+                            <tr>
+                                <td>Depression</td>
+                                <td>${data.depression.d_score}</td>
+                                <td>${data.depression.level}</td>
+                            </tr>
+                            <tr>
+                                 <td>Stress</td>
+                                <td>${data.stress.s_score}</td>
+                                <td>${data.stress.level}</td>
+                            </tr>
+                        </tbody>
+                    </table>`;
+                    },
+                },
+                {
+                    data: "qol_total",
+                    name: "qol_total",
+                    render: function (data, type, row, meta) {
+                        data = row.qol_total
+                        return `  
+                        <table class="table" id="data">
+                        <thead>
+                            <tr>
+                                <th>Kategori</th>
+                                <th>Score</th>
+                                <th>Level</th>
+                            </tr>
+                        </thead>
+                         <tbody>
+                            <tr>
+                                <td>Domain 1</td>
+                                <td>${data.domain_1.result}</td>
+                                <td>${data.domain_1.interpreted_result}</td>
+                            </tr>
+                            <tr>
+                                <td>Domain 2</td>
+                                  <td>${data.domain_2.result}</td>
+                                <td>${data.domain_2.interpreted_result}</td>
+                            </tr>
+                            <tr>
+                                 <td>Domain 3</td>
+                                   <td>${data.domain_3.result}</td>
+                                <td>${data.domain_3.interpreted_result}</td>
+                            </tr>
+                            <tr>
+                                 <td>Domain 4</td>
+                                 <td>${data.domain_4.result}</td>
+                                <td>${data.domain_4.interpreted_result}</td>
+                            </tr>
+                        </tbody>
+                    </table>`;
+                        return JSON.stringify(row.qol_total);
+                    },
+                },
+                {
+                    data: "dass21_test_start_time",
+                    name: "dass21_test_start_time",
+                },
+                {
+                    data: "dass21_test_end_time",
+                    name: "dass21_test_end_time",
+                },
+                {
+                    data: null,
+                    name: "aksi",
+                    render: (data, type, row, meta) => {
+                        var edit_url = "{{url_for('mahasiswa_edit',mahasiswa_id=':var')}}";
+                        return `<div style="height:36px">
+                <a href="${edit_url.replace(
+                            ":var",
+                            data.id
+                        )}" class="btn icon btn-outline-success"><i class="bi bi-info-circle"></i></a>
+              </div>`;
+                    },
+                },
+            ],
+        });
+    });
+</script>
+{% endblock %}

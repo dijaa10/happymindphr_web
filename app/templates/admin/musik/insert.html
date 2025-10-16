@@ -1,0 +1,169 @@
+{% extends "admin/layouts/main.html" %}
+{% block title %} Musik {% endblock%}
+{% block style %}
+<style>
+    .filepond--root {
+        height: 15rem;
+    }
+
+    .filepond--drop-label.filepond--drop-label label {
+        margin-top: 10rem;
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<header class="mb-3">
+    <a href="#" class="burger-btn d-block d-xl-none">
+        <i class="bi bi-justify fs-3"></i>
+    </a>
+</header>
+
+<div class="page-heading">
+    <div class="page-title">
+        <div class="row">
+            <div class="col-12 col-md-6 order-md-1 order-last">
+                <h3>Tambah Data Musik</h3>
+            </div>
+            <div class="col-12 col-md-6 order-md-2 order-first">
+                <nav aria-label="breadcrumb" class="breadcrumb-header float-start float-lg-end">
+                    <ol class="breadcrumb">
+                        <li class="breadcrumb-item"><a href="index.html">Dashboard</a></li>
+                        <li class="breadcrumb-item">
+                            <a href="{{url_for('musik_index')}}">Data Musik</a>
+                        </li>
+                        <li class="breadcrumb-item active" aria-current="page">
+                            Tambah Data Musik
+                        </li>
+                    </ol>
+                </nav>
+            </div>
+        </div>
+    </div>
+    <section class="section">
+        <div class="card">
+            <div class="card-header">Tambah Data</div>
+            <div class="card-body">
+                <form action="{{url_for('store_musik_data')}}" method="post" id="formTambahData">
+                    <div class="row">
+                        <div class="col-md-6 col-12">
+                            <div class="row">
+                                <div class="col-12">
+                                    <div class="form-group">
+                                        <label for="judul">Judul Lagu</label>
+                                        <input type="text" required id="judul" class="form-control" name="judul"
+                                            placeholder="Judul Lagu">
+                                    </div>
+                                </div>
+                                <div class="col-12">
+                                    <div class="form-group">
+                                        <label for="penyanyi">Penyanyi</label>
+                                        <input type="text" required id="penyanyi" class="form-control" name="penyanyi"
+                                            placeholder="Penyanyi">
+                                    </div>
+                                </div>
+                                <div class="col-12">
+                                    <div class="form-group">
+                                        <label for="genre">Genre</label>
+                                        <input type="text" required id="genre" class="form-control" name="genre"
+                                            placeholder="Genre">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6 col-12">
+                            <div class="col-12">
+                                <input type="file" name="mp3_file" id="mp3_file">
+
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-12 d-flex justify-content-end">
+                        <button type="submit" class="btn btn-primary me-1 mb-1">Simpan</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </section>
+</div>
+
+{% endblock %}
+{% block script %}
+<script>
+    $(document).ready(function () {
+        FilePond.registerPlugin(FilePondPluginFileValidateType);
+        loadFilePond()
+        $.validator.addMethod("checkAlpha", function (value, element) {
+            return (new RegExp("^[a-zA-Z ]*$").test(value))
+
+        }, "Kolom harus diisi dengan huruf");
+        $.validator.addMethod("checkAlphaSym", function (value, element) {
+            return (new RegExp("^[a-zA-Z .,]*$").test(value))
+        }, "Kolom harus diisi dengan huruf");
+        $('#formTambahData').validate({
+            // wrapper: "#form-input",
+            rules: {
+                penyanyi: {
+                    required: true,
+                },
+                judul: {
+                    required: true,
+                },
+                genre: {
+                    required: true,
+                },
+
+
+            },
+            //hightlight: function(element) {
+            //    $(element).addClass('is-invalid')
+            //},
+            errorElement: "span",
+            errorPlacement: function (error, element) {
+                $(element).addClass('is-invalid')
+                error.addClass("invalid-feedback");
+                // error.appendTo("#form-input");
+                error.insertAfter(element);
+                // Add the `help-block` class to the error element
+
+                // if (element.prop("type") === "checkbox") {
+                //     error.insertAfter(element.parent("label"));
+                // } else {
+                //     error.insertAfter(element);
+                // }
+            },
+            success: function (label, element) {
+                $(element).removeClass('is-invalid');
+            }
+        });
+    });
+    function loadFilePond() {
+        var file_pond = $('#mp3_file').filepond({
+            acceptedFileTypes: ['audio/mpeg', 'audio/wav', 'audio/aac', 'audio/flac', 'audio/ogg'],
+            labelFileProcessingComplete: `Upload Berhasil`,
+            // fileValidateTypeLabelExpectedTypes: 'File harus berekstensi .mp/.doc atau .docx',
+            labelInvalidField: 'File tidak didukung',
+            labelTapToUndo: `ketuk untuk membatalkan`,
+            labelTapToCancel: `ketuk untuk membatalkan`,
+            labelFileProcessingError: `Gagal Memproses`,
+            labelTapToRetry: `ketuk untuk coba lagi`,
+            labelFileProcessing: `Sedang memproses`,
+            labelIdle: `Seret dan tempel atau <span class="filepond--label-action">Pilih Musik</span> untuk mengunggah file musik`,
+            labelInvalidField: `File tidak didukung`,
+            credits: false,
+            fileValidateTypeDetectType: [],
+            server: {
+                process: "{{url_for('upload_musik_file')}}",
+                revert: {
+                    url: "{{url_for('remove_musik_file')}}",
+                    method: 'GET',
+                },
+            }
+        });
+        file_pond.on('FilePond:removefile', function (e) {
+            console.log(e);
+        })
+    }
+</script>
+{% endblock %}

@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Happy Mind Admin">
+    <title>{% block title %}{% endblock %} - Happy Mind Admin</title>
+
+    {% include "admin/layouts/style.html" %}
+    {% block style %}{% endblock %}
+    <link rel="shortcut icon" href="{{url_for('static',filename='images/logo/ico.png')}}" type="image/x-icon">
+    <style>
+        .page-item.active .page-link {
+            background-color: #3B867E !important;
+            border-color: #3B867E !important;
+        }
+
+        .btn-primary {
+            background-color: #3B867E !important;
+            border-color: #3B867E !important;
+        }
+
+        .btn-check:focus+.btn-primary,
+        .btn-primary:focus,
+        .btn-primary:hover {
+            color: #fff;
+            background-color: #2e6862 !important;
+            border-color: #2e6862 !important;
+        }
+
+        .breadcrumb-item a {
+            color: #3B867E !important;
+        }
+
+        .breadcrumb-item a:hover {
+            color: #2e6862 !important;
+        }
+        #main > div > div > div > div.col-12.col-md-6.order-md-1.order-last > h3{
+            color:#3B867E !important;
+        }
+        .sidebar-wrapper .menu .submenu .submenu-item.active>a {
+            color: #3B867E !important;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="app">
+        {% include "admin/layouts/sidebar.html" %}
+        <div id="main">
+            {% block content %}{% endblock %}
+
+            <footer>
+                <div class="footer clearfix mb-0 text-muted">
+                    <div class="float-start">
+                        <p>2025 &copy; Happy Mind</p>
+                    </div>
+                    <div class="float-end">
+                        <p>Happy Mind DevTeams</p>
+                    </div>
+                </div>
+            </footer>
+        </div>
+    </div>
+    {% include "admin/layouts/script.html" %}
+</body>
+
+{% block script %}{% endblock %}
+<script>
+    function logoutConfirmation() {
+        Swal.fire({
+            title: "Apakah anda yakin untuk keluar?",
+            showDenyButton: true,
+            icon:"question",
+        }).then((result) => {
+            /* Read more about isConfirmed, isDenied below */
+            if (result.isConfirmed) {
+                window.location.href = "{{url_for('logout')}}"
+            }
+        });
+    }
+</script>
+
+</html>

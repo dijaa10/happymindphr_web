@@ -1,0 +1,132 @@
+{% extends "admin/layouts/main.html" %}
+{% block title %} Data Quality of Life {% endblock%}
+{% block content %}
+<header class="mb-3">
+    <a href="#" class="burger-btn d-block d-xl-none">
+        <i class="bi bi-justify fs-3"></i>
+    </a>
+</header>
+
+<div class="page-heading">
+    <div class="page-title">
+        <div class="row">
+            <div class="col-12 col-md-6 order-md-1 order-last">
+                <h3>Data Quality of Life</h3>
+                <p class="text-subtitle text-muted">
+                    Dibawah ini data pertanyaan Quality of Life yang telah terdaftar
+                </p>
+            </div>
+            <div class="col-12 col-md-6 order-md-2 order-first">
+                <nav aria-label="breadcrumb" class="breadcrumb-header float-start float-lg-end">
+                    <ol class="breadcrumb">
+                        <li class="breadcrumb-item"><a href="index.html">Dashboard</a></li>
+                        <li class="breadcrumb-item active" aria-current="page">
+                            Data Quality of Life
+                        </li>
+                    </ol>
+                </nav>
+            </div>
+        </div>
+    </div>
+    <section class="section">
+        <div class="card">
+            <!-- <div class="card-header">Simple Datatable</div> -->
+            <div class="card-body">
+                <!-- <a href="{{url_for('insert_data_admin_page')}}" class="btn btn-primary">Tambah Data</a> -->
+                <div class="table-responsive">
+                    <table class="table table-striped " id="data">
+                        <thead>
+                            <tr>
+                                <th>No</th>
+                                <th>id</th>
+                                <th>Pertanyaan</th>
+                                <!-- <th>Aksi</th> -->
+                            </tr>
+                        </thead>
+                    </table>
+                </div>
+
+            </div>
+        </div>
+    </section>
+</div>
+
+{% endblock %}
+{% block script %}
+<script>
+    $(document).ready(function () {
+        var table = $("#data").DataTable({
+            columnDefs: [
+                {
+                    searchable: true,
+                    orderable: true,
+                    // targets: 3,
+                },
+            ],
+            processing: true,
+            ajax: {
+                url: "{{url_for('qol_json')}}",
+                type: "GET",
+                beforeSend: function (xhr) {
+                    xhr.setRequestHeader("Content-Type", "application/json");
+                },
+            },
+            columns: [
+                {
+                    data: "id_row",
+                    name: "id_row",
+                    render: function (data, type, row, meta) {
+                        return meta.row + meta.settings._iDisplayStart + 1;
+                    },
+                },
+                {
+                    data: "no",
+                    name: "no",
+                    visible: false
+                },
+                {
+                    data: "pertanyaan",
+                    name: "pertanyaan",
+                },
+               
+                // {
+                //     data: null,
+                //     name: "aksi",
+                //     sortable:false,
+                //     render: (data, type, row, meta) => {
+                //         var edit_url = "{{url_for('page_data_admin_edit',admin_id=':var')}}"
+                //         return `
+                //         <a href="${edit_url.replace(':var', data.id)}" class="btn icon btn-outline-success"><i class="bi bi-pencil"></i></a>
+                //         `
+                //     }
+                // }
+            ],
+        });
+    });
+
+    function showDialog(admin_id) {
+        var delete_url = "{{url_for('data_admin_delete_data',admin_id=':admin_id')}}"
+        Swal.fire({
+            title: "Apakah anda yakin menghapus data ini?",
+            showDenyButton: true,
+            icon: "question",
+        }).then((result) => {
+            if (result.isConfirmed) {
+                window.location.href = delete_url.replace(":admin_id", admin_id)
+            }
+        });
+    }
+
+    function slugToRegularString(slug) {
+        // Replace hyphens with spaces
+        let regularString = slug.replace(/_/g, ' ');
+
+        // Capitalize the first letter of each word
+        regularString = regularString.replace(/\b[a-z]/g, (char) => char.toUpperCase());
+
+        return regularString;
+    }
+
+    
+</script>
+{% endblock %}

@@ -1,0 +1,85 @@
+<div id="sidebar" class="active">
+    <div class="sidebar-wrapper active">
+        <div class="sidebar-header">
+            <div class="d-flex justify-content-between">
+                <div class="logo">
+                    <a href="index.html"><img src="{{url_for('static',filename='images/logo/websiteLogo.png')}}" alt="Logo"
+                            srcset=""></a>
+                </div>
+                <div class="toggler">
+                    <a href="#" class="sidebar-hide d-xl-none d-block"><i class="bi bi-x bi-middle"></i></a>
+                </div>
+            </div>
+        </div>
+        <div class="sidebar-menu">
+            <ul class="menu">
+                <li class="sidebar-title">Menu</li>
+
+                <li class="sidebar-item {{'active' if 'dashboard' in url_for(request.endpoint) else ''}} ">
+                    <a href="{{url_for('dashboard')}}" class='sidebar-link'>
+                        <i class="bi bi-grid-fill"></i>
+                        <span>Dashboard</span>
+                    </a>
+                </li>
+                <li class="sidebar-item {{'active' if 'data_admin' in url_for(request.endpoint) else ''}}">
+                    <a href="{{url_for('data_admin_index')}}" class='sidebar-link'>
+                        <i class="bi bi-people-fill"></i>
+                        <span>Admin</span>
+                    </a>
+                </li>
+                <li class="sidebar-item {{'active' if 'mahasiswa' in url_for(request.endpoint) else ''}}">
+                    <a href="{{url_for('mahasiswa_index')}}" class='sidebar-link'>
+                        <i class="bi bi-person-bounding-box"></i>
+                        <span>Mahasiswa</span>
+                    </a>
+                </li>
+                <li class="sidebar-item {{'active' if 'pengajuan_surat' in url_for(request.endpoint) else ''}}">
+                    <a href="{{url_for('pengajuan_surat_index')}}" class='sidebar-link'>
+                        <i class="bi bi-clipboard-data"></i>
+                        <span>Pengajuan Surat </span>
+                    </a>
+                </li>
+                <li class="sidebar-item {{'active' if 'music' in url_for(request.endpoint) else ''}}">
+                    <a href="{{url_for('musik_index')}}" class='sidebar-link'>
+                        <i class="bi bi-music-note-beamed"></i>
+                        <span>Data Musik</span>
+                    </a>
+                </li>
+                <li class="sidebar-item {{'active' if 'artikel' in url_for(request.endpoint) else ''}}">
+                    <a href="{{url_for('artikel_index')}}" class='sidebar-link'>
+                        <i class="bi bi-textarea-t"></i>
+                        <span>Data Artikel</span>
+                    </a>
+                </li>
+               
+                <li class="sidebar-item  has-sub {{'active' if 'data-test' in url_for(request.endpoint) else ''}}">
+                    <a href="#" class="sidebar-link">
+                        <i class="bi bi-list-check"></i>
+                        <span>Data Test</span>
+                    </a>
+                    <ul class="submenu submenu-open" style="--submenu-height: 43px;">
+                        <li class="submenu-item {{'active' if 'dass21' in url_for(request.endpoint) else ''}} ">
+                            <a href="{{url_for('dass21_index')}}" class="submenu-link">Stress Scale Test</a>
+                        </li>
+                        <li class="submenu-item {{'active' if 'qol' in url_for(request.endpoint) else ''}} ">
+                            <a href="{{url_for('qol_index')}}" class="submenu-link">Quality Of Life</a>
+                        </li>
+                        <li class="submenu-item  {{'active' if 'life-balance' in url_for(request.endpoint) else ''}}">
+                            <a href="{{url_for('life_balance_index')}}" class="submenu-link">Life Balance Test</a>
+                        </li>
+                        <li class="submenu-item  {{'active' if 'screening' in url_for(request.endpoint) else ''}}">
+                            <a href="{{url_for('pertanyaan_screening_index')}}" class="submenu-link">Pertanyaan Screening</a>
+                        </li>
+                    </ul>
+                </li>
+                <li class="sidebar-item ">
+                    <a onclick="logoutConfirmation()" class='sidebar-link' style="cursor: pointer;">
+                        <i class="bi bi-box-arrow-right text-danger"></i>
+                        <span class="text-danger">Logout </span>
+                    </a>
+                </li>
+            </ul>
+        </div>
+        <button class="sidebar-toggler btn x"><i data-feather="x"></i></button>
+    </div>
+</div>

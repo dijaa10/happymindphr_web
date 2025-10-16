@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>404 - Happy Mind Admin</title>
+    <link rel="shortcut icon" href="{{url_for('static',filename='images/logo/ico.png')}}" type="image/x-icon">
+    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{{url_for('static',filename='css/bootstrap.css')}}">
+    <link rel="stylesheet" href=" {{url_for('static',filename='vendors/bootstrap-icons/bootstrap-icons.css')}}">
+    <link rel="stylesheet" href="{{url_for('static',filename='css/app.css')}}">
+    <style>
+        #error{background-color:#ebf3ff;padding:2rem 0;min-height:100vh}#error .img-error{height:435px;object-fit:contain;padding:3rem 0}#error .error-title{font-size:3rem;margin-top:1rem}html[data-bs-theme=dark] #error{background-color:#151521}
+        .error-title {
+            color: #3B867E !important;
+        }
+
+        .btn-primary {
+            background-color: #3B867E !important;
+            border-color: #3B867E !important;
+        }
+
+        .btn-check:focus+.btn-primary,
+        .btn-primary:focus,
+        .btn-primary:hover {
+            color: #fff;
+            background-color: #2e6862 !important;
+            border-color: #2e6862 !important;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="error">
+        <div class="col-md-8 col-12 offset-md-2">
+            <img class="img-error" style="margin-left: 15rem;" src="{{url_for('static',filename='images/samples/error-404.png')}}" alt="Not Found">
+            <div class="text-center">
+                <h1 class="error-title">NOT FOUND</h1>
+                <p class='fs-5 text-gray-600'>Halaman yang anda tuju tidak ditemukan</p>
+            </div>
+        </div>
+
+
+    </div>
+</body>
+
+</html>

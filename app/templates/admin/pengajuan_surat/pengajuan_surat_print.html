@@ -1,0 +1,382 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Surat Keterangan Sehat</title>
+    <style>
+        @page {
+            size: A4;
+            margin: 0;
+        }
+        
+        @media print {
+            .no-print { 
+                display: none !important; 
+            }
+            body { 
+                margin: 0;
+                padding: 0;
+            }
+            .container {
+                page-break-after: avoid;
+            }
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Times New Roman', Times, serif;
+            background: #f5f5f5;
+        }
+        
+        .container {
+            width: 210mm;
+            height: 297mm;
+            margin: 0 auto;
+            padding: 15mm 20mm 15mm 20mm;
+            background: white;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+            overflow: hidden;
+        }
+        
+        .header {
+            display: flex;
+            align-items: center;
+            border-bottom: 3px solid #000;
+            padding-bottom: 8px;
+            margin-bottom: 15px;
+        }
+        
+        .logo {
+            width: 75px;
+            height: 75px;
+            margin-right: 12px;
+            flex-shrink: 0;
+        }
+        
+        .header-text {
+            flex: 1;
+            text-align: center;
+        }
+        
+        .header-text h1 {
+            font-size: 13pt;
+            font-weight: bold;
+            margin: 1px 0;
+            line-height: 1.2;
+        }
+        
+        .header-text p {
+            font-size: 9pt;
+            margin: 1px 0;
+        }
+        
+        .title {
+            text-align: center;
+            margin: 12px 0 15px;
+        }
+        
+        .title h2 {
+            font-size: 13pt;
+            text-decoration: underline;
+            font-weight: bold;
+            margin-bottom: 3px;
+        }
+        
+        .title p {
+            font-size: 10pt;
+            margin-top: 2px;
+        }
+        
+        .content {
+            font-size: 11pt;
+            line-height: 1.5;
+        }
+        
+        .intro {
+            margin-bottom: 10px;
+        }
+        
+        .identity {
+            margin-left: 40px;
+            margin-bottom: 12px;
+        }
+        
+        .identity table {
+            border-collapse: collapse;
+            width: 100%;
+        }
+        
+        .identity td {
+            padding: 2px 0;
+            vertical-align: top;
+            font-size: 11pt;
+        }
+        
+        .identity td:first-child {
+            width: 280px;
+        }
+        
+        .identity td:nth-child(2) {
+            width: 15px;
+            text-align: center;
+        }
+        
+        .section {
+            margin-bottom: 10px;
+        }
+        
+        .section-title {
+            font-weight: bold;
+            margin-bottom: 6px;
+            font-size: 11pt;
+        }
+        
+        .result-table {
+            margin-left: 40px;
+            margin-bottom: 8px;
+        }
+        
+        .result-table table {
+            border-collapse: collapse;
+            width: 100%;
+        }
+        
+        .result-table td {
+            padding: 2px 0;
+            vertical-align: top;
+            font-size: 11pt;
+        }
+        
+        .result-table td:first-child {
+            width: 280px;
+        }
+        
+        .result-table td:nth-child(2) {
+            width: 15px;
+            text-align: center;
+        }
+        
+        .conclusion {
+            margin: 12px 0;
+            text-indent: 0;
+        }
+        
+        .footer {
+            margin-top: 20px;
+        }
+        
+        .signature-wrapper {
+            display: flex;
+            justify-content: flex-end;
+        }
+        
+        .signature {
+            text-align: center;
+            min-width: 200px;
+        }
+        
+        .signature p {
+            font-size: 11pt;
+            margin: 2px 0;
+        }
+        
+        .signature-space {
+            height: 50px;
+        }
+        
+        .signature .name-line {
+            border-bottom: 1px solid #000;
+            display: inline-block;
+            min-width: 200px;
+            margin-top: 5px;
+        }
+        
+        .print-button {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            padding: 12px 24px;
+            background: #007bff;
+            color: white;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 600;
+            box-shadow: 0 2px 8px rgba(0,123,255,0.3);
+            z-index: 1000;
+            transition: all 0.3s;
+        }
+        
+        .print-button:hover {
+            background: #0056b3;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0,123,255,0.4);
+        }
+        
+        .print-button:active {
+            transform: translateY(0);
+        }
+    </style>
+</head>
+<body>
+    <button class="print-button no-print" onclick="window.print()">🖨️ Cetak Surat</button>
+    
+    <div class="container">
+        <!-- Header -->
+        <div class="header">
+            <img src="{{ url_for('static', filename='images/polije.png') }}" alt="Logo Polije" class="logo">
+            <div class="header-text">
+                <h1>KEMENTERIAN PENDIDIKAN TINGGI, SAINS, DAN TEKNOLOGI</h1>
+                <h1>POLITEKNIK NEGERI JEMBER</h1>
+                <h1>KLINIK PRATAMA</h1>
+                <p>Jalan Mastrip Kotak Pos 164, 68101 Telp.(0331) 333532-34 Faks. 333531</p>
+                <p>Email: klinikpratama@polije.ac.id</p>
+            </div>
+        </div>
+        
+        <!-- Title -->
+        <div class="title">
+            <h2>Surat Keterangan Sehat Secara Fisik dan Psikologis</h2>
+            <p>Nomor: 001/SKS/KP-POLIJE/X/2025</p>
+        </div>
+        
+        <!-- Content -->
+        <div class="content">
+            <div class="intro">
+                <p>Dengan ini, saya menerangkan bahwa:</p>
+            </div>
+            
+            <!-- Identity -->
+            <div class="identity">
+                <table>
+                    <tr>
+                        <td>Nama</td>
+                        <td>:</td>
+                        <td><strong>Muhammad Adi Saputro</strong></td>
+                    </tr>
+                    <tr>
+                        <td>NIM</td>
+                        <td>:</td>
+                        <td>E41210759</td>
+                    </tr>
+                    <tr>
+                        <td>Tanggal Lahir</td>
+                        <td>:</td>
+                        <td>21 Mei 2003</td>
+                    </tr>
+                    <tr>
+                        <td>Usia</td>
+                        <td>:</td>
+                        <td>22 Tahun</td>
+                    </tr>
+                    <tr>
+                        <td>Tanggal Pemeriksaan</td>
+                        <td>:</td>
+                        <td>24 September 2025</td>
+                    </tr>
+                    <tr>
+                        <td>Alamat</td>
+                        <td>:</td>
+                        <td>Jember</td>
+                    </tr>
+                </table>
+            </div>
+            
+            <!-- Physical Examination -->
+            <div class="section">
+                <div class="section-title">A. Hasil Pemeriksaan Fisik</div>
+                <div class="result-table">
+                    <table>
+                        <tr>
+                            <td>Tensi</td>
+                            <td>:</td>
+                            <td>120/80 mmHg</td>
+                        </tr>
+                        <tr>
+                            <td>Tinggi Badan</td>
+                            <td>:</td>
+                            <td>170 Cm</td>
+                        </tr>
+                        <tr>
+                            <td>Berat Badan</td>
+                            <td>:</td>
+                            <td>65 Kg</td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+            
+            <!-- Psychological Examination -->
+            <div class="section">
+                <div class="section-title">B. Hasil Pemeriksaan Psikologis</div>
+                <div class="result-table">
+                    <table>
+                        <tr>
+                            <td>Kecemasan (Anxiety)</td>
+                            <td>:</td>
+                            <td></td>
+                        </tr>
+                        <tr>
+                            <td>Depresi (Depression)</td>
+                            <td>:</td>
+                            <td></td>
+                        </tr>
+                        <tr>
+                            <td>Stres (Stress)</td>
+                            <td>:</td>
+                            <td></td>
+                        </tr>
+                        <tr>
+                            <td>Risiko Burnout</td>
+                            <td>:</td>
+                            <td></td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+            
+            <!-- Conclusion -->
+            <div class="section">
+                <div class="section-title">C. Kesimpulan</div>
+                <div class="result-table">
+                    <table>
+                        <tr>
+                            <td>Secara Fisik dinyatakan</td>
+                            <td>:</td>
+                            <td><strong>SEHAT</strong></td>
+                        </tr>
+                        <tr>
+                            <td>Secara Psikologis dinyatakan</td>
+                            <td>:</td>
+                            <td><strong>SEHAT</strong></td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+            
+            <div class="conclusion">
+                <p>Demikian surat keterangan ini dibuat, agar dapat digunakan sebagaimana mestinya.</p>
+            </div>
+            
+            <!-- Footer -->
+            <div class="footer">
+                <div class="signature-wrapper">
+                    <div class="signature">
+                        <p>Jember, 16 Oktober 2025</p>
+                        <p style="margin-top: 8px;">Psikolog,</p>
+                        <div class="signature-space"></div>
+                        <p style="font-weight: bold;">(...............................................)</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

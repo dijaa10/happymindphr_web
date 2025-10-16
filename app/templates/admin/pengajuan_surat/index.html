@@ -171,9 +171,20 @@
               sortable: false,
               render: (data, type, row, meta) => {
                 var edit_url = "{{url_for('pengajuan_surat_edit',id_mahasiswa=':var',waktu_mulai=':waktu_mulai')}}"
-                return `<div style="height:36px">
-                    <a href="${edit_url.replace(':var',data.mahasiswa_id).replace(':waktu_mulai',data.dass21_test_start_time)}" class="btn icon btn-outline-success"><i class="bi bi-info-circle"></i></a>
-                  </div>`
+                var print_url = "{{url_for('pengajuan_surat_print',id_mahasiswa=':var',waktu_mulai=':waktu_mulai')}}";
+                 return `<div style="min-height:36px; display: flex; gap: 5px; flex-wrap: wrap;">
+                <a href="${edit_url.replace(':var', data.mahasiswa_id).replace(':waktu_mulai', data.dass21_test_start_time)}" 
+                   class="btn icon btn-outline-success" 
+                   title="Detail">
+                  <i class="bi bi-info-circle"></i>
+                </a>
+                <a href="${print_url.replace(':var', data.mahasiswa_id).replace(':waktu_mulai', data.dass21_test_start_time)}" 
+                   class="btn icon btn-outline-primary" 
+                   target="_blank"
+                   title="Print Surat Kesehatan">
+                  <i class="bi bi-printer"></i>
+                </a>
+              </div>`;
               }
             }
           ],

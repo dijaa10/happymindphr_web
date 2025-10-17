@@ -11,7 +11,6 @@ from flask_jwt_extended import JWTManager
 from dotenv import load_dotenv,dotenv_values
 import locale
 
-locale.setlocale(locale.LC_ALL, 'id_ID')
 BaseModel = declarative_base()
 load_dotenv() #load env
 

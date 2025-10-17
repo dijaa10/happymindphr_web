@@ -6,17 +6,12 @@ from app.config import session,bcrypt
 import ulid
 from sqlalchemy import event
 
-
-class Admin(UserMixin,BaseModel):
+class Admin(UserMixin, BaseModel):
     __tablename__ = "admin"
 
-    def __init__(self,nama,id,role, **kwargs):
-        kwargs["id"] = kwargs.get("id", ulid.new())
-        self.id = id
-        self.nama = nama
-        self.role = role
+    def __init__(self, **kwargs):
+        kwargs["id"] = kwargs.get("id", str(ulid.new()))
         super().__init__(**kwargs)
-
 
     id: Mapped[str] = mapped_column("id", primary_key=True)
     nama: Mapped[str] = mapped_column("nama")

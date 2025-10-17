@@ -41,8 +41,7 @@
                     <th>No</th>
                     <th>id</th>
                     <th>Nama</th>
-                    <th>Hasil Stress Scale</th>
-                    <th>Hasil Life Balance</th>
+                    <th>NIM</th>
                     <th>Waktu Mulai</th>
                     <th>Waktu Berakhir</th>
                     <th>Aksi</th>
@@ -93,65 +92,8 @@
               name:"mahasiswa_nama",
             },
             {
-              data:"dass21_total",
-              name:"dass21_total",
-              sortable: false,
-              render: function (data, type, row, meta) {
-                        data = row.dass21_total
-                        // const jsObject = JSON.parse(row.dass21_total);
-                        return `  
-                        <table class="table" id="data">
-                        <thead>
-                            <tr>
-                                <th>Kategori</th>
-                                <th>Score</th>
-                                <th>Level</th>
-                            </tr>
-                        </thead>
-                         <tbody>
-                            <tr>
-                                <td>Anxiety</td>
-                                <td>${data.anxiety.a_score}</td>
-                                <td>${data.anxiety.level}</td>
-                            </tr>
-                            <tr>
-                                <td>Depression</td>
-                                <td>${data.depression.d_score}</td>
-                                <td>${data.depression.level}</td>
-                            </tr>
-                            <tr>
-                                 <td>Stress</td>
-                                <td>${data.stress.s_score}</td>
-                                <td>${data.stress.level}</td>
-                            </tr>
-                        </tbody>
-                    </table>`;
-                    },
-            },
-            {
-              data:"life_balance_total",
-              name:"life_balance_total",
-              sortable: false,
-              render: function (data, type, row, meta) {
-                data = row.life_balance_total
-                return `  
-                        <table class="table" id="data">
-                        <thead>
-                            <tr>
-                              <th>Score</th>
-                              <th>Penjelasan</th>
-                            </tr>
-                        </thead>
-                         <tbody>
-                            
-                            <tr>
-                              <td>${data.result}</td>
-                              <td>${data.explanation}</td>
-                            </tr>
-                            <tr><td></td></tr>
-                        </tbody>
-                    </table>`;
-              },
+              data:"mahasiswa_nim",
+              name:"mahasiswa_nim",
             },
             {
               data:"dass21_test_start_time",
@@ -163,8 +105,6 @@
               name:"dass21_test_end_time",
               sortable: false,
             },
-            
-            
             {
               data:null,
               name:"aksi",
@@ -192,4 +132,3 @@
       });
     </script>
     {% endblock %}
-    

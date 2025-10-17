@@ -18,6 +18,7 @@ def pengajuan_surat_json_data():
         select(
             Mahasiswa.id,
             Mahasiswa.nama,
+            Mahasiswa.nim,
             Dass21Test.total_nilai,
             Dass21Test.waktu_mulai,
             Dass21Test.waktu_selesai,
@@ -37,10 +38,11 @@ def pengajuan_surat_json_data():
             {
                 "mahasiswa_id": row[0],
                 "mahasiswa_nama": row[1],
-                "dass21_total": row[2],
-                "dass21_test_start_time": row[3].strftime("%Y-%m-%d %H:%M:%S"),
-                "dass21_test_end_time": row[4].strftime("%Y-%m-%d %H:%M:%S"),
-                "life_balance_total": row[5],
+                "mahasiswa_nim": row[2],
+                "dass21_total": row[3],
+                "dass21_test_start_time": row[4].strftime("%Y-%m-%d %H:%M:%S"),
+                "dass21_test_end_time": row[5].strftime("%Y-%m-%d %H:%M:%S"),
+                "life_balance_total": row[6],
             }
         )
     session.close()

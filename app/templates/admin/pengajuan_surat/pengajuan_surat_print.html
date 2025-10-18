@@ -259,32 +259,32 @@
                     <tr>
                         <td>Nama</td>
                         <td>:</td>
-                        <td><strong>Muhammad Adi Saputro</strong></td>
+                        <td><strong>{{ data.nama }}</strong></td>
                     </tr>
                     <tr>
                         <td>NIM</td>
                         <td>:</td>
-                        <td>E41210759</td>
+                        <td>{{ data.nim }}</td>
                     </tr>
                     <tr>
                         <td>Tanggal Lahir</td>
                         <td>:</td>
-                        <td>21 Mei 2003</td>
+                        <td>{{ data.tanggal_lahir }}</td>
                     </tr>
                     <tr>
                         <td>Usia</td>
                         <td>:</td>
-                        <td>22 Tahun</td>
+                        <td>{{ data.usia }} Tahun</td>
                     </tr>
                     <tr>
                         <td>Tanggal Pemeriksaan</td>
                         <td>:</td>
-                        <td>24 September 2025</td>
+                        <td>{{ data.tanggal_pemeriksaan }}</td>
                     </tr>
                     <tr>
                         <td>Alamat</td>
                         <td>:</td>
-                        <td>Jember</td>
+                        <td>{{ data.alamat }}</td>
                     </tr>
                 </table>
             </div>
@@ -297,17 +297,17 @@
                         <tr>
                             <td>Tensi</td>
                             <td>:</td>
-                            <td>120/80 mmHg</td>
+                            <td>{% if data.tensi %}{{ data.tensi }} mmHg{% else %}-{% endif %}</td>
                         </tr>
                         <tr>
                             <td>Tinggi Badan</td>
                             <td>:</td>
-                            <td>170 Cm</td>
+                            <td>{% if data.tinggi_badan %}{{ data.tinggi_badan }} Cm{% else %}-{% endif %}</td>
                         </tr>
                         <tr>
                             <td>Berat Badan</td>
                             <td>:</td>
-                            <td>65 Kg</td>
+                            <td>{% if data.berat_badan %}{{ data.berat_badan }} Kg{% else %}-{% endif %}</td>
                         </tr>
                     </table>
                 </div>
@@ -321,22 +321,22 @@
                         <tr>
                             <td>Kecemasan (Anxiety)</td>
                             <td>:</td>
-                            <td></td>
+                           <!-- <td>{% if data.anxiety_level %}{{ data.anxiety_level }}{% else %}-{% endif %}</td> -->
                         </tr>
                         <tr>
                             <td>Depresi (Depression)</td>
                             <td>:</td>
-                            <td></td>
+                           <!-- <td>{% if data.depression_level %}{{ data.depression_level }}{% else %}-{% endif %}</td> -->
                         </tr>
                         <tr>
                             <td>Stres (Stress)</td>
                             <td>:</td>
-                            <td></td>
+                           <!-- <td>{% if data.stress_level %}{{ data.stress_level }}{% else %}-{% endif %}</td> -->
                         </tr>
                         <tr>
                             <td>Risiko Burnout</td>
                             <td>:</td>
-                            <td></td>
+                           <!-- <td>{% if data.burnout_level %}{{ data.burnout_level }}{% else %}-{% endif %}</td> -->
                         </tr>
                     </table>
                 </div>
@@ -350,12 +350,12 @@
                         <tr>
                             <td>Secara Fisik dinyatakan</td>
                             <td>:</td>
-                            <td><strong>SEHAT</strong></td>
+                        <!-- <td><strong>{% if data.physical_status %}{{ data.physical_status }}{% else %}SEHAT{% endif %}</strong></td> -->
                         </tr>
                         <tr>
                             <td>Secara Psikologis dinyatakan</td>
                             <td>:</td>
-                            <td><strong>SEHAT</strong></td>
+                           <!-- <td><strong>{% if data.psychological_status %}{{ data.psychological_status }}{% else %}-{% endif %}</strong></td> -->
                         </tr>
                     </table>
                 </div>
@@ -369,7 +369,7 @@
             <div class="footer">
                 <div class="signature-wrapper">
                     <div class="signature">
-                        <p>Jember, 16 Oktober 2025</p>
+                        <p>Jember, {{ data.tanggal_surat }}</p>
                         <p style="margin-top: 8px;">Psikolog,</p>
                         <div class="signature-space"></div>
                         <p style="font-weight: bold;">(...............................................)</p>

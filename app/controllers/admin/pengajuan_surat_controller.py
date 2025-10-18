@@ -220,9 +220,8 @@ def print_surat_kesehatan(id_mahasiswa, waktu_mulai):
     data_kesehatan = session.query(DataKesehatan).filter(
         DataKesehatan.mahasiswa_id == id_mahasiswa,
         DataKesehatan.tanggal == today_date
-    ).order_by(DataKesehatan.created_at.desc()).first()  # Ambil data terbaru hari ini
+    ).order_by(DataKesehatan.created_at.desc()).first()
     
-    # Debug print untuk melihat data kesehatan
     if data_kesehatan:
         print(f"Data Kesehatan ditemukan: TB={data_kesehatan.tinggi_badan}, BB={data_kesehatan.berat_badan}, Tensi={data_kesehatan.tensi_lengkap}")
     else:
